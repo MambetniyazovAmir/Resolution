@@ -8,5 +8,6 @@ class MainPresenter(private val view: MainView, private val firebaseHelper: Fire
     }
     fun logout(){
         firebaseHelper.logout()
+        isSignedIn()
     }
 }

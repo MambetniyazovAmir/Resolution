@@ -43,7 +43,6 @@ class MainActivity : AppCompatActivity(), MainView {
         when (item?.itemId){
             R.id.logoutButton -> {
                 presenter.logout()
-                presenter.isSignedIn()
             }
         }
         return false

@@ -10,4 +10,6 @@
     <string name="i_have_signed_up_already">I have signed up already</string>
     <string name="register_error">Ошибка при регистрации</string>
     <string name="your_images">Your Images</string>
+    <string name="before">Before</string>
+    <string name="after">After</string>
 </resources>
