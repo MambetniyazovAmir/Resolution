@@ -41,4 +41,12 @@
             app:fab_colorPressed="#FF8C00"
             app:fab_shadow="true"
             android:src="@drawable/ic_photo_library_white_24dp"/>
+    <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:indeterminate="true"
+            android:visibility="gone"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
