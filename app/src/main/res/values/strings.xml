@@ -2,14 +2,16 @@
     <string name="app_name" translatable="false">Resolution</string>
     <string name="super_image_resolution" translatable="false">Super Image Resolution</string>
     <string name="email">Email</string>
-    <string name="new_user_sign_up">New user ? Sign up</string>
-    <string name="login">LOGIN</string>
-    <string name="password">Password</string>
-    <string name="confirm_password">Confirm password</string>
-    <string name="sign_up">Sign up</string>
-    <string name="i_have_signed_up_already">I have signed up already</string>
-    <string name="register_error">Ошибка при регистрации</string>
-    <string name="your_images">Your Images</string>
-    <string name="before">Before</string>
-    <string name="after">After</string>
+    <string name="new_user_sign_up">Registratsiya</string>
+    <string name="login">Kirish</string>
+    <string name="password">Parol</string>
+    <string name="confirm_password">Parolni takroran kiriting</string>
+    <string name="sign_up">Registratsiya</string>
+    <string name="i_have_signed_up_already">Men allaqachon registratsiyadan o\'tganman</string>
+    <string name="register_error">Registratsiya qilishda hatolik yuz berdi</string>
+    <string name="your_images">Sizning rasmlaringiz</string>
+    <string name="before">Oldin</string>
+    <string name="after">Keyin</string>
+    <string name="passwords_are_not_same">Parollar mos emas!</string>
+    <string name="photo_download_error">Rasmlarni yuklashda xatolik</string>
 </resources>

@@ -37,8 +37,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_margin="16dp"
             app:fab_type="normal"
-            app:fab_colorNormal="#FFA500"
-            app:fab_colorPressed="#FF8C00"
+            app:fab_colorNormal="@color/white"
+            app:fab_colorPressed="#DCDCDC"
             app:fab_shadow="true"
             android:src="@drawable/ic_photo_library_white_24dp"/>
     <ProgressBar

@@ -8,4 +8,5 @@ interface MainView {
     fun setLoading(isLoading: Boolean)
     fun showMessage(message: String)
     fun showMessage(messageResId: Int)
+    fun setData(models: List<ImageModel>)
 }

@@ -5,11 +5,12 @@ import android.net.Uri
 import com.example.resolution.helper.FirebaseHelper
 import android.graphics.Bitmap
 import android.provider.MediaStore.Images
-import android.widget.Toast
 import com.example.resolution.callback.GenericFirebaseResponseListener
+import com.example.resolution.callback.OnHistoryReceiveListener
 import com.example.resolution.data.ImageModel
 
-class MainPresenter(private val view: MainView, private val firebaseHelper: FirebaseHelper): GenericFirebaseResponseListener<ImageModel> {
+class MainPresenter(private val view: MainView, private val firebaseHelper: FirebaseHelper):
+    GenericFirebaseResponseListener<ImageModel>, OnHistoryReceiveListener {
     fun isSignedIn() {
         view.updateView(firebaseHelper.isUserSignedIn())
     }
@@ -34,10 +35,23 @@ class MainPresenter(private val view: MainView, private val firebaseHelper: Fire
     }
 
     override fun onFailure(message: String) {
+        view.setLoading(false)
         view.showMessage(message)
     }
 
     override fun onFailure(messageResId: Int) {
+        view.setLoading(false)
         view.showMessage(messageResId)
     }
+
+    fun getHistory() {
+        view.setLoading(true)
+        firebaseHelper.getHistory(this)
+    }
+
+    override fun onResponse(models: List<ImageModel>) {
+        view.setLoading(false)
+        view.setData(models)
+    }
+
 }

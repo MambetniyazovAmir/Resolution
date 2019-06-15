@@ -1,16 +1,9 @@
 package com.example.resolution.data
 
-import com.google.gson.annotations.SerializedName
-
 data class ImageModel (
-    @SerializedName("user_id")
-    var userId: String,
+    var user_id: String = "",
 
-    @SerializedName("original_image")
-    var originalImage: String,
+    var original_image: String = "",
 
-    @SerializedName("super_image")
-    var superImage: String
-
-
+    var super_image: String = ""
 )

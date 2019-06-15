@@ -18,7 +18,11 @@ class RegisterActivity : AppCompatActivity(), RegisterView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
         signUpButton.setOnClickListener {
-            presenter.register(etEmail.text.toString(), etPassword.text.toString())
+            if(etPassword.text.toString() == etConfirmPassword.text.toString())
+                presenter.register(etEmail.text.toString(), etPassword.text.toString())
+            else{
+                Toast.makeText(this, getString(R.string.passwords_are_not_same), Toast.LENGTH_SHORT).show()
+            }
         }
         signedUpButton.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))

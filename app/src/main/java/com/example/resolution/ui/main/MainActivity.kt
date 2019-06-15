@@ -10,21 +10,37 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.resolution.R
+import com.example.resolution.callback.OnImageItemClickListener
 import com.example.resolution.data.ImageModel
 import com.example.resolution.helper.FirebaseHelper
 import com.example.resolution.ui.login.LoginActivity
+import com.example.resolution.ui.main.list.ResolutionAdapter
 import com.example.resolution.ui.review.ReviewActivity
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity(), MainView {
+class MainActivity : AppCompatActivity(), MainView, OnImageItemClickListener {
     private val presenter = MainPresenter(this, FirebaseHelper())
     private val imageCode = 1
     private val permissionCode = 2
+    private val adapter = ResolutionAdapter(this)
+    private val auth = FirebaseAuth.getInstance()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        if (auth.currentUser == null) {
+            updateView(false)
+            return
+        }
         presenter.isSignedIn()
+
+        listView.adapter = adapter
+        listView.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+
         choosePhoto.setOnClickListener {
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
                 if (checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE)==PackageManager.PERMISSION_DENIED){
@@ -39,9 +55,11 @@ class MainActivity : AppCompatActivity(), MainView {
                 pickImageFromGallery()
             }
         }
+
+        presenter.getHistory()
     }
     private fun pickImageFromGallery(){
-        val intent: Intent = Intent(Intent.ACTION_PICK)
+        val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
         startActivityForResult(intent,imageCode)
     }
@@ -65,12 +83,11 @@ class MainActivity : AppCompatActivity(), MainView {
         }
     }
     override fun updateView(isSignedIn: Boolean) {
-        val intent = Intent(this, LoginActivity::class.java)
-        if (isSignedIn) {
-            Toast.makeText(this,"Success",Toast.LENGTH_SHORT).show()
-        } else {
+        if (!isSignedIn) {
+            val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
             finish()
+            return
         }
     }
 
@@ -98,18 +115,25 @@ class MainActivity : AppCompatActivity(), MainView {
     }
 
     override fun showMessage(message: String) {
-        Toast.makeText(this, "Ошибка при загрузке фото", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
     override fun showMessage(messageResId: Int) {
-        Toast.makeText(this, "Ошибка при загрузке фото", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, messageResId, Toast.LENGTH_SHORT).show()
     }
 
     override fun showResizedImage(model: ImageModel) {
         val intent = Intent(this, ReviewActivity::class.java)
-        intent.putExtra("userId", model.userId)
-        intent.putExtra("originalImage", model.originalImage)
-        intent.putExtra("superImage", model.superImage)
+        intent.putExtra(ReviewActivity.ORIGINAL_IMAGE_URL, model.original_image)
+        intent.putExtra(ReviewActivity.SUPER_IMAGE_URL, model.super_image)
         startActivity(intent)
+    }
+
+    override fun onItemClick(model: ImageModel) {
+        showResizedImage(model)
+    }
+
+    override fun setData(models: List<ImageModel>) {
+        adapter.setData(models)
     }
 }

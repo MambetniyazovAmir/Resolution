@@ -1,16 +1,14 @@
 package com.example.resolution.helper
 
-
 import android.net.Uri
 import android.util.Log
 import com.example.resolution.callback.GenericFirebaseResponseListener
+import com.example.resolution.callback.OnHistoryReceiveListener
 import com.example.resolution.data.ImageModel
-import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import com.google.firebase.storage.UploadTask
 import java.util.*
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlin.collections.HashMap
@@ -44,10 +42,11 @@ class FirebaseHelper {
         auth.signOut()
     }
     fun isUserSignedIn() : Boolean = auth.currentUser != null
+
     fun upload(originalUri: Uri, superUri: Uri, callback: GenericFirebaseResponseListener<ImageModel>) {
-        mStorageRef = storage.reference.child("images/${originalUri.lastPathSegment}")
+        mStorageRef = storage.reference.child("images/" + UUID.randomUUID().toString())
         mStorageRef?.putFile(originalUri)
-            ?.continueWithTask {
+            ?.continueWithTask { it ->
                 if (!it.isSuccessful) {
                     it.exception?.let {
                         throw it
@@ -59,6 +58,7 @@ class FirebaseHelper {
                 when (task.isSuccessful) {
                     true -> {
                         val originalLink = task.result.toString()
+                        mStorageRef = storage.reference.child("images/" + UUID.randomUUID().toString())
                         mStorageRef?.putFile(superUri)
                             ?.continueWithTask {
                                 if (!it.isSuccessful) {
@@ -95,5 +95,24 @@ class FirebaseHelper {
                     false -> task.exception?.localizedMessage
                 }
             }
+    }
+
+    fun getHistory(callback: OnHistoryReceiveListener) {
+        db.collection("images")
+            .whereEqualTo("user_id", auth.currentUser?.uid)
+            .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+                if (firebaseFirestoreException != null) {
+                    callback.onFailure(firebaseFirestoreException.localizedMessage)
+                    return@addSnapshotListener
+                }
+                val models: MutableList<ImageModel> = arrayListOf()
+                querySnapshot?.documents?.forEach { doc ->
+                    val model = doc.toObject(ImageModel::class.java)!!
+                    Log.d("patpelek", model.original_image)
+                    models.add(model)
+                }
+                callback.onResponse(models)
+            }
+
     }
 }

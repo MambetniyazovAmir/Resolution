@@ -34,6 +34,7 @@
             android:textColorHint="@color/white"
             android:backgroundTint="@color/white"
             android:textColor="@color/white"
+            android:inputType="textEmailAddress"
             app:layout_constraintTop_toTopOf="@+id/guideline"
             android:layout_marginRight="@dimen/standard_margin"
             android:layout_marginLeft="@dimen/standard_margin"/>
@@ -42,6 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16sp"
+            android:inputType="textPassword"
             android:hint="@string/password"
             android:textColorHint="@color/white"
             android:textColor="@color/white"
@@ -53,6 +55,7 @@
             android:id="@+id/etConfirmPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="textPassword"
             android:textSize="16sp"
             android:hint="@string/confirm_password"
             android:textColorHint="@color/white"

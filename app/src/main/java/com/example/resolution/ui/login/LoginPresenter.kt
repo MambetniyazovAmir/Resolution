@@ -17,10 +17,12 @@ class LoginPresenter(private val view: LoginView, private val firebaseHelper: Fi
 
     override fun onFailure(message: String) {
         view.showMessage(message)
+        view.setLoading(false)
     }
 
     override fun onFailure(messageResId: Int) {
         view.showMessage(messageResId)
+        view.setLoading(false)
     }
 
 }

@@ -18,9 +18,11 @@ class RegisterPresenter (private val view: RegisterView, private val firebaseHel
 
     override fun onFailure(message: String) {
         view.showMessage(message)
+        view.setLoading(false)
     }
 
     override fun onFailure(messageResId: Int) {
         view.showMessage(messageResId)
+        view.setLoading(false)
     }
 }
